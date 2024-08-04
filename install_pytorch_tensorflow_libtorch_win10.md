@@ -18,7 +18,7 @@ Examples of compatibility:
 2. Update nvidia driver
 3. Install cuda 11.8
 4. Unzip cudnn 8.6
-5. Move .dll, .h, .lib files to cuda toolkit folder:
+5. Move DLL, H, LIB files to cuda toolkit folder:
 
 `cudnn\bin` => `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin`
 
@@ -52,7 +52,7 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 2. Update nvidia driver
 3. Install cuda 11.8
 4. Unzip cudnn 8.6
-5. Move .dll, .h, .lib files to cuda toolkit folder
+5. Move DLL, H, LIB files to cuda toolkit folder:
 6. Check system variables
 7. Install tensorflow-gpu along with its dependencies by running:
 
@@ -60,10 +60,10 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 pip3 install tensorflow==2.10.1
 ```
 
-## LibTorch
+## LibTorch (Debug)
 
 1. Install visual studio 2022
-2. Repeat steps 2-5 above
+2. Repeat steps 2-6 above
 3. Check system variables:
 
 `CUDA_PATH`  |  `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8`
@@ -102,9 +102,6 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\include
 C:\Program Files\NVIDIA Corporation\NvToolsExt\include
 ```
 
-C/C++ | Optimization | Enable Intrinsic Functions:
-`Yes (/Oi)`
-
 Linker | General | Additional Library Directories:
 ```
 C:\CppLibs\libtorchd\lib
@@ -113,7 +110,7 @@ C:\CppLibs\opencv\build\x64\vc16\lib
 
 Linker | Input | Additional Dependencies:
 
-(All .lib files in `C:\CppLibs\libtorchd\lib`)
+(All LIB files in `C:\CppLibs\libtorchd\lib`)
 
 ```
 opencv_world4100d.lib
@@ -161,3 +158,50 @@ int main()
     std::cout << "Hello World!\n";
 }
 ```
+
+## LibTorch (Release)
+
+1. Repeat steps 1-6, but every folder name should be libtorch
+2. Make sure to delete every last 'd', especially LIB files
+
+Linker | Input | Additional Dependencies:
+
+(All LIB files in `C:\CppLibs\libtorch\lib`)
+
+```
+opencv_world4100.lib
+asmjit.lib
+c10.lib
+c10_cuda.lib
+caffe2_nvrtc.lib
+cpuinfo.lib
+dnnl.lib
+fbgemm.lib
+fbjni.lib
+fmt.lib
+kineto.lib
+libprotobuf.lib
+libprotobuf-lite.lib
+libprotoc.lib
+pthreadpool.lib
+pytorch_jni.lib
+sleef.lib
+torch.lib
+torch_cpu.lib
+torch_cuda.lib
+XNNPACK.lib
+```
+
+3. Copy require DLL files in `C:\CppLibs\libtorch\lib` to the same folder as EXE file
+
+CUDA & cuDNN DLL files are also required when deploying externally. 
+
+
+
+
+
+
+
+
+
+

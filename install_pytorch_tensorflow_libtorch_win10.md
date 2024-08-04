@@ -63,9 +63,101 @@ pip3 install tensorflow==2.10.1
 ## LibTorch
 
 1. Install visual studio 2022
-2. Repeat steps 2-6 above (except checking python path in step 6)
-3. 
+2. Repeat steps 2-5 above
+3. Check system variables:
 
+`CUDA_PATH`  |  `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8`
 
+`CUDA_PATH_V11_8`  |  `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8`
 
+`PATH`  |  `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin`
 
+`PATH`  |  `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\libnvvp`
+
+4. Download opencv (window) and extract (optional) 
+5. Download libtorch and unzip (rename `libtorch(debug)` to `libtorchd`)
+
+(Release version):
+
+https://download.pytorch.org/libtorch/cu118/libtorch-win-shared-with-deps-2.4.0%2Bcu118.zip
+
+(Debug version):
+
+https://download.pytorch.org/libtorch/cu118/libtorch-win-shared-with-deps-debug-2.4.0%2Bcu118.zip
+
+5. Project Properties (Configuration: Debug)
+
+General | C++ Language Standard:
+`ISO C++17 Standard (/std:c++17)`
+
+C/C++ | General | SDL checks:
+`No (/sdl-)`
+
+C/C++ | General | Additional Include Directories:
+```
+C:\CppLibs\opencv\build\include
+C:\CppLibs\libtorchd\include
+C:\CppLibs\libtorchd\include\torch\csrc\api\include
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\include
+C:\Program Files\NVIDIA Corporation\NvToolsExt\include
+```
+
+C/C++ | Optimization | Enable Intrinsic Functions:
+`Yes (/Oi)`
+
+Linker | General | Additional Library Directories:
+```
+C:\CppLibs\libtorchd\lib
+C:\CppLibs\opencv\build\x64\vc16\lib
+```
+
+Linker | Input | Additional Dependencies:
+
+(All .lib files in `C:\CppLibs\libtorchd\lib`)
+
+```
+opencv_world4100d.lib
+asmjit.lib
+c10.lib
+c10_cuda.lib
+caffe2_nvrtc.lib
+cpuinfo.lib
+dnnl.lib
+fbgemm.lib
+fbjni.lib
+fmtd.lib
+kineto.lib
+libprotobufd.lib
+libprotobuf-lited.lib
+libprotocd.lib
+pthreadpool.lib
+pytorch_jni.lib
+sleef.lib
+torch.lib
+torch_cpu.lib
+torch_cuda.lib
+XNNPACK.lib
+```
+
+Debugging | Environment:
+`PATH=C:\CppLibs\libtorchd\lib;%PATH%`
+
+Linker | Command Line | Additional Options:
+`/INCLUDE:"?warp_size@cuda@at@@YAHXZ" `
+
+6. Copy following code and Start Without Debugging
+```
+#include <iostream>
+#include <torch/torch.h>
+
+int main()
+{
+    if (torch::cuda::is_available()) {
+        std::cout << "CUDA is available. Number of CUDA devices: " << torch::cuda::device_count() << std::endl;
+    }
+    else {
+        std::cout << "CUDA is not available." << std::endl;
+    }
+    std::cout << "Hello World!\n";
+}
+```
